@@ -3,6 +3,11 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
+import { FaCirclePlus } from "react-icons/fa6";
+import { RiChatUploadFill } from "react-icons/ri";
+import { RiDeleteBin4Fill } from "react-icons/ri";
+import { BiSolidMessageSquareEdit } from "react-icons/bi";
+import { RiCheckboxBlankCircleLine } from "react-icons/ri";
 
 function App() {
   const [data, setData] = useState([]);
@@ -61,7 +66,7 @@ function App() {
   }
 
   const handleDelete = (id) => {
-    const filteredData = data.filter((item) => item.id === id);
+    const filteredData = data.filter((item) => item.id !== id);
     setData(filteredData)
 
   }
@@ -93,41 +98,48 @@ function App() {
 
   return (
     <>
-      <div>
+      <div className='todoList'>
         <div className='addTodo'>
-        <input value={inputValue} onChange={(e) => handleChange(e)} type="text" placeholder='Enter Here' className='input'/>
-        {isUpdate ?
-          <button className='saveUpdate' onClick={() => handleUpdate()}>Update</button>
-          :
-          <button className='saveUpdate' onClick={() => handleAdd()}>+</button>
-        }
+          <div className='addTask'>
+            <input value={inputValue} onChange={(e) => handleChange(e)} type="text" placeholder='Enter Here' className='input' />
+            {isUpdate ?
+              <div className='button' onClick={() => handleUpdate()}>
+                <RiChatUploadFill size={40}/>
+              </div>
+              :
+              <div className='button' onClick={() => handleAdd()}>
+                <FaCirclePlus size={40}/>
+              </div>
+
+
+              // <button className='saveUpdate' onClick={() => handleAdd()}>
+              //   <FaBeer color='black' />
+              // </button>
+            }
+          </div>
         </div>
 
         <br></br>
-        {/* Examples to renter data on UI */}
-        {/* {c.name}
-        {
-          b.map((item)=>{
-            return(
-              <div>{item.name}</div>
-            )
-          })
-        }
-
-        {a.map((ele) => {
-          return(<p>{ele}</p>)
-        })} */}
         {data.map((ele, index) => {
           const { todo, id, isComplete } = ele;
           return (
-            <div key={id}>
+            <div className='taskList' key={id}>
+              {/* <div type='checkbox' onChange={(e) => handleCheckBox(e, id)}>
+                <RiCheckboxBlankCircleLine />
+              </div> */}
+              <div className='content'>
               <input className='checkBox' type='checkbox' onChange={(e) => handleCheckBox(e, id)} ></input>
-              <span style={isComplete ? { "textDecoration": "line-through" } : {}}>{todo}</span>
+              <div className={isComplete ? 'strike-out' : 'content-text' }>{todo}</div>
+              </div>
               {!isComplete ?
-                <>
-                  <button className='saveUpdate' onClick={() => handleDelete(id)}>delete</button>
-                  <button className='saveUpdate' onClick={() => handleEdit(id)}>Edit</button>
-                </>
+                <div className='btns'>
+                  <div className='button' onClick={() => handleDelete(id)}>
+                    <RiDeleteBin4Fill size={40}/>
+                  </div>
+                  <div className='button' onClick={() => handleEdit(id)}>
+                    <BiSolidMessageSquareEdit size={40}/>
+                  </div>
+                </div>
                 :
                 null
               }
